@@ -1,0 +1,53 @@
+*background: #101010
+*foreground: #aaaaaa
+*colorBD:	#eeeeee
+! black
+*color0:	#080808
+*color8:	#404040
+! red
+*color1:	#bf4646
+*color9:	#f48a8a
+! green
+*color2:	#b7ce42
+*color10:	#bde077
+! yellow
+*color3:	#fea63c
+*color11:	#ffe863
+! blue
+*color4:	#336692
+*color12:	#478dc9
+! magenta
+*color5:	#b7416e
+*color13:	#bb4466
+! cyan
+*color6:	#5e7175
+*color14:	#a3babf
+! white
+*color7:	#aaaaaa
+*color15:	#eeeeee
+
+URxvt.scrollBar:		false
+URxvt.scrollBar_right:	false
+URxvt.scrollTtyOutput:	false
+URxvt.scrollWithBuffer:	true
+URxvt.scrollTtyKeypress:true
+URxvt.font:				xft:Terminus:pixelsize=12,xft:TakaoGothic
+URxvt.imFont:			-*-takaogothic-*-*-*-*-12-*-*-*-*-*-*-*
+URxvt.transparent:		true
+URxvt.shading:			10
+URxvt.visualBell:		true
+URxvt.pointerBlank:		true
+URxvt.urgentOnBell:		true
+URxvt.perl-ext:			default,url-select
+URxvt.keysym.M-l:		perl:url-select:select_next
+URxvt.urlLauncher:		google-chrome
+! rxvt-unicode in Arch adds crap to TERM
+URxvt.termName:			rxvt-unicode
+
+Xft.autohint: 0
+Xft.lcdfilter: lcddefault
+Xft.antialias: 1
+Xft.dpi: 96.000000
+Xft.hinting: 1
+Xft.hintstyle: hintmedium
+Xft.rgba: rgb

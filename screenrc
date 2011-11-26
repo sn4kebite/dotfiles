@@ -1,0 +1,6 @@
+hardstatus alwayslastline "%{= dK}%H %0c %{y}> %{= K}%-w%{dw}%n %t%{= dK}%+w"
+startup_message off
+shelltitle '$ |bash'
+altscreen on
+vbell off
+bell_msg "Bell in window %n ^G"
