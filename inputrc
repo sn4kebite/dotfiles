@@ -1,0 +1,4 @@
+$include /etc/inputrc
+
+# append / when tabcompleting directory symlinks
+set mark-symlinked-directories on
