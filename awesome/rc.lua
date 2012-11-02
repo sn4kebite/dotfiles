@@ -109,9 +109,11 @@ vicious.register(widgets.memgraph, vicious.widgets.mem, "$1")
 --end)
 
 widgets.hddtemp = widget({ type = "textbox" })
-vicious.register(widgets.hddtemp, vicious.widgets.hddtemp, "${/dev/sda} °C", 19)
+--if os.getenv("DISPLAY") == ":0" then
+	--vicious.register(widgets.hddtemp, vicious.widgets.hddtemp, "${/dev/sda} °C" .. os.getenv("DISPLAY"), 19)
 
-widgets.hddtemp = jbh.widgets.sensors(5)
+	widgets.hddtemp = jbh.widgets.sensors(5)
+--end
 
 widgets.net = widget({ type = "textbox" })
 vicious.register(widgets.net, vicious.widgets.net, "${eth0 down_kb} / ${eth0 up_kb}")
@@ -321,6 +323,8 @@ awful.rules.rules = {
 	{ rule = { class = "aquaria" }, properties = { border_width = 0 } },
 	{ rule = { class = "net-minecraft-MinecraftLauncher" }, properties = { border_width = 0 } },
 	{ rule = { class = "warzone2100" }, properties = { border_width = 0 } },
+	{ rule = { class = "mupen64plus" }, properties = { border_width = 0 } },
+	{ rule = { name = "Coertex Command" }, properties = { border_width = 0 } },
 	{ rule = { class = "ioUrbanTerror" }, properties = { border_width = 0 } }
 	--{ rule = { class = "Google-chrome" }, properties = { floating = false } }
 --[[	{ rule = { name = "MPlayer" }, properties = { floating = true, border_width = 0 } },
