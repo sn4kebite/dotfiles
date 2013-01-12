@@ -40,7 +40,7 @@ URxvt.pointerBlank:		true
 URxvt.urgentOnBell:		true
 URxvt.perl-ext:			default,url-select
 URxvt.keysym.M-l:		perl:url-select:select_next
-URxvt.urlLauncher:		google-chrome
+URxvt.url-select.launcher:google-chrome
 ! rxvt-unicode in Arch adds crap to TERM
 URxvt.termName:			rxvt-unicode
 
