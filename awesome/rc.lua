@@ -1,11 +1,13 @@
-require("awful")
+local gears = require("gears")
+local awful = require("awful")
 require("awful.autofocus")
-require("awful.rules")
-require("beautiful")
---require("naughty")
-require("vicious")
+awful.rules =  require("awful.rules")
+local beautiful = require("beautiful")
+-- local naughty = require("naughty")
+local wibox = require("wibox")
+local vicious = require("vicious")
 
-require("jbh")
+local jbh = require("jbh")
 
 beautiful.init("/home/snakebite/.config/awesome/theme.lua")
 
@@ -23,6 +25,10 @@ naughty.config.bg = beautiful.bg_focus
 naughty.config.presets.normal.border_color = beautiful.border_focus
 naughty.config.border_width = 1
 ]]--
+
+for s = 1, screen.count() do
+	gears.wallpaper.maximized("/home/snakebite/wallpaper." .. s .. ".png", s, true)
+end
 
 config = {}
 
@@ -74,12 +80,16 @@ widgets.tasklist.buttons = awful.util.table.join(
 	awful.button({}, 1, function(c) if not c:isvisible() then awful.tag.viewonly(c:tags()[1]) end client.focus = c; c:raise() end)
 )
 
-widgets.systray = widget({ type = "systray" })
+--widgets.systray = widget({ type = "systray" })
+--widgets.systray = wibox.widget.systray()
 
-widgets.datewidget = widget({ type = "textbox" })
+--widgets.datewidget = widget({ type = "textbox" })
+widgets.datewidget = wibox.widget.textbox()
 vicious.register(widgets.datewidget, vicious.widgets.date, "<span color='" .. beautiful.fg_focus .. "'>%d.%m.%Y %T</span>", 1)
+--vicious.register(widgets.datewidget, vicious.widgets.date, "<span color='#aaaaaa'>%d.%m.%Y %T</span>", 1)
 
-widgets.cpugraph = awful.widget.graph({ layout = awful.widget.layout.horizontal.rightleft })
+--widgets.cpugraph = awful.widget.graph({ layout = awful.widget.layout.horizontal.rightleft })
+widgets.cpugraph = awful.widget.graph()
 widgets.cpugraph:set_width(50)
 widgets.cpugraph:set_height(14)
 widgets.cpugraph:set_background_color(beautiful.bg_normal)
@@ -87,7 +97,8 @@ widgets.cpugraph:set_color("#AECF96")
 --widgets.cpugraph:set_gradient_colors({ "#FF5656", "#88A175", "#AECF96" })
 vicious.register(widgets.cpugraph, vicious.widgets.cpu, "$1")
 
-widgets.memgraph = awful.widget.graph({ layout = awful.widget.layout.horizontal.rightleft })
+--widgets.memgraph = awful.widget.graph({ layout = awful.widget.layout.horizontal.rightleft })
+widgets.memgraph = awful.widget.graph()
 widgets.memgraph:set_width(50)
 widgets.memgraph:set_height(14)
 widgets.memgraph:set_background_color(beautiful.bg_normal)
@@ -108,14 +119,16 @@ vicious.register(widgets.memgraph, vicious.widgets.mem, "$1")
 --widgets.memgraph.widget:add_signal("mouse:enter", function()
 --end)
 
-widgets.hddtemp = widget({ type = "textbox" })
+--widgets.hddtemp = widget({ type = "textbox" })
+--widgets.hddtemp = wibox.widget.textbox()
 --if os.getenv("DISPLAY") == ":0" then
-	--vicious.register(widgets.hddtemp, vicious.widgets.hddtemp, "${/dev/sda} °C" .. os.getenv("DISPLAY"), 19)
+	--vicious.register(widgets.hddtemp, vicious.widgets.hddtemp, "${/dev/sda} °C", 19)
 
 	widgets.hddtemp = jbh.widgets.sensors(5)
 --end
 
-widgets.net = widget({ type = "textbox" })
+--widgets.net = widget({ type = "textbox" })
+widgets.net = wibox.widget.textbox()
 vicious.register(widgets.net, vicious.widgets.net, "${eth0 down_kb} / ${eth0 up_kb}")
 
 --widgets.mpd = widget({ type = "textbox" })
@@ -132,23 +145,23 @@ end)]]--
 
 icons = {}
 
-icons.separator = widget({ type = "imagebox" })
-icons.separator.image = image(beautiful.widget_separator)
+icons.separator = wibox.widget.imagebox()
+icons.separator:set_image(beautiful.widget_separator)
 
-icons.cpu = widget({ type = "imagebox" })
-icons.cpu.image = image(beautiful.widget_cpu)
+icons.cpu = wibox.widget.imagebox()
+icons.cpu:set_image(beautiful.widget_cpu)
 
-icons.mem = widget({ type = "imagebox" })
-icons.mem.image = image(beautiful.widget_mem)
+icons.mem = wibox.widget.imagebox()
+icons.mem:set_image(beautiful.widget_mem)
 
-icons.down = widget({ type = "imagebox" })
-icons.down.image = image(beautiful.widget_down)
+icons.down = wibox.widget.imagebox()
+icons.down:set_image(beautiful.widget_down)
 
-icons.up = widget({ type = "imagebox" })
-icons.up.image = image(beautiful.widget_up)
+icons.up = wibox.widget.imagebox()
+icons.up:set_image(beautiful.widget_up)
 
-icons.temp = widget({ type = "imagebox" })
-icons.temp.image = image(beautiful.widget_temp)
+icons.temp = wibox.widget.imagebox()
+icons.temp:set_image(beautiful.widget_temp)
 
 --icons.mail = widget({ type = "imagebox" })
 --icons.mail.image = image(beautiful.widget_mail)
@@ -168,17 +181,52 @@ for s = 1, screen.count() do
 			i = #tags[s]
 			tags[s][i].screen = s
 			tags[s][i].selected = t.selected or false
-			awful.layout.set(config.layouts[1], tags[s][i])
+			awful.layout.set(config.layouts[5], tags[s][i])
 		end
 	end
 
-	widgets.taglist[s] = awful.widget.taglist(s, awful.widget.taglist.label.all, widgets.taglist.buttons)
-	widgets.tasklist[s] = awful.widget.tasklist(function(c) return awful.widget.tasklist.label.currenttags(c, s) end, widgets.tasklist.buttons)
+	--widgets.taglist[s] = awful.widget.taglist(s, awful.widget.taglist.label.all, widgets.taglist.buttons)
+	widgets.taglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.all, widgets.taglist.buttons)
+	--widgets.tasklist[s] = awful.widget.tasklist(function(c) return awful.widget.tasklist.label.currenttags(c, s) end, widgets.tasklist.buttons)
+	widgets.tasklist[s] = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, widgets.tasklist.buttons)
 
-	widgets.promptbox[s] = awful.widget.prompt({layout = awful.widget.layout.horizontal.leftright})
+	--widgets.promptbox[s] = awful.widget.prompt({layout = awful.widget.layout.horizontal.leftright})
+	widgets.promptbox[s] = awful.widget.prompt()
+
+	local left_layout = wibox.layout.fixed.horizontal()
+	left_layout:add(widgets.taglist[s])
+	left_layout:add(widgets.promptbox[s])
+
+	local right_layout = wibox.layout.fixed.horizontal()
+	if s == 1 then
+		right_layout:add(icons.down)
+		right_layout:add(widgets.net)
+		right_layout:add(icons.up)
+		right_layout:add(icons.separator)
+		right_layout:add(icons.temp)
+		right_layout:add(widgets.hddtemp)
+		right_layout:add(icons.separator)
+		right_layout:add(icons.mem)
+		right_layout:add(widgets.memgraph)
+		right_layout:add(icons.separator)
+		right_layout:add(icons.cpu)
+		right_layout:add(widgets.cpugraph)
+		right_layout:add(icons.separator)
+		right_layout:add(wibox.widget.systray())
+		right_layout:add(icons.separator)
+		right_layout:add(widgets.datewidget)
+	end
+	right_layout:add(widgets.layoutbox[s])
+
+	local layout = wibox.layout.align.horizontal()
+	layout:set_left(left_layout)
+	layout:set_middle(widgets.tasklist[s])
+	layout:set_right(right_layout)
 
 	statusbar[s] = awful.wibox({position = "top", screen = s, height = 14})
-	statusbar[s].widgets = {
+	statusbar[s]:set_widget(layout)
+
+	--[[statusbar[s].widgets = {
 		{
 			widgets.taglist[s],
 			widgets.promptbox[s],
@@ -210,7 +258,7 @@ for s = 1, screen.count() do
 		--s == 2 and widgets.mpd or nil,
 		widgets.tasklist[s],
 		layout = awful.widget.layout.horizontal.rightleft
-	}
+	}]]--
 end
 
 globalkeys = awful.util.table.join(
@@ -357,12 +405,15 @@ clientbuttons = awful.util.table.join(
 	awful.button({"Mod1"}, 3, awful.mouse.client.resize)
 )
 
-client.add_signal("manage", function(c, startup)
-	c:add_signal("mouse::enter", function(c)
-		client.focus = c
+client.connect_signal("manage", function(c, startup)
+	c:connect_signal("mouse::enter", function(c)
+		if awful.client.focus.filter(c) then
+			client.focus = c
+		end
 	end)
 
 	if not startup and awful.client.focus.filter(c) then
+		awful.client.setslave(c)
 		c.screen = mouse.screen
 		c:raise()
 	end
@@ -372,5 +423,5 @@ client.add_signal("manage", function(c, startup)
 	c.size_hints_honor = false
 end)
 
-client.add_signal("focus", function(c) c.border_color = beautiful.border_focus end)
-client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
+client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)

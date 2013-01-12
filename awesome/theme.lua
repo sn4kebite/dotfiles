@@ -4,7 +4,8 @@
 
 theme = {}
 
-theme.confdir = awful.util.getdir("config")
+--theme.confdir = awful.util.getdir("config")
+theme.confdir = "/home/snakebite/.config/awesome"
 
 theme.widget_separator = theme.confdir .. "/icons/separator.png"
 theme.widget_cpu = theme.confdir .. "/icons/cpu.png"
@@ -18,28 +19,27 @@ theme.widget_mail = theme.confdir .. "/icons/mail.png"
 --theme.font           = "terminus 9"
 theme.font           = "ProFont 8"
 
-a = ""
+theme.bg_normal     = "#101010"
+theme.bg_focus      = "#404040"
+theme.bg_urgent     = "#bf4646"
+theme.bg_minimize   = "#444444"
+theme.bg_systray    = theme.bg_normal
 
-theme.bg_normal     = "#101010" .. a
-theme.bg_focus      = "#404040" .. a
-theme.bg_urgent     = "#bf4646" .. a
-theme.bg_minimize   = "#444444" .. a
+theme.fg_normal     = "#404040"
+theme.fg_focus      = "#aaaaaa"
+theme.fg_urgent     = "#ffffff"
+theme.fg_minimize   = "#ffffff"
 
-theme.fg_normal     = "#404040" .. a
-theme.fg_focus      = "#aaaaaa" .. a
-theme.fg_urgent     = "#ffffff" .. a
-theme.fg_minimize   = "#ffffff" .. a
-
-theme.border_width  = "1"
+theme.border_width  = 1
 theme.border_normal = "#111111"
 theme.border_focus  = "#535d6c"
 theme.border_marked = "#91231c"
 
-theme.taglist_fg_focus  = "#dddddd" .. a
-theme.taglist_bg_focus  = "#404040" .. a
+theme.taglist_fg_focus  = "#dddddd"
+theme.taglist_bg_focus  = "#404040"
 
-theme.tasklist_fg_focus = "#dddddd" .. a
-theme.tasklist_bg_focus = "#404040" .. a
+theme.tasklist_fg_focus = "#dddddd"
+theme.tasklist_bg_focus = "#404040"
 
 -- There are other variable sets
 -- overriding the default one when
@@ -61,8 +61,8 @@ theme.tasklist_floating_icon = "/usr/share/awesome/themes/default/tasklist/float
 -- menu_[bg|fg]_[normal|focus]
 -- menu_[border_color|border_width]
 theme.menu_submenu_icon = "/usr/share/awesome/themes/default/submenu.png"
-theme.menu_height = "15"
-theme.menu_width  = "100"
+theme.menu_height = 15
+theme.menu_width  = 100
 
 -- You can add as many variables as
 -- you wish and access them by using
@@ -95,6 +95,7 @@ theme.titlebar_maximized_button_focus_active  = "/usr/share/awesome/themes/defau
 
 -- You can use your own command to set your wallpaper
 theme.wallpaper_cmd = { "awsetbg -t wallpaper.png" }
+theme.wallpaper = "/home/snakebite/wallpaper.png"
 
 -- You can use your own layout icons like this:
 theme.layout_fairh = theme.confdir .. "/icons-awesome-anrxc/layouts-small/fairh.png"
@@ -111,6 +112,8 @@ theme.layout_spiral  = theme.confdir .. "/icons-awesome-anrxc/layouts-small/spir
 theme.layout_dwindle = theme.confdir .. "/icons-awesome-anrxc/layouts-small/dwindle.png"
 
 theme.awesome_icon = "/usr/share/awesome/icons/awesome16.png"
+
+theme.icon_theme = nil
 
 return theme
 -- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=4:softtabstop=4:textwidth=80
