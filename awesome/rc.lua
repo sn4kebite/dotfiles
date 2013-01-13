@@ -80,68 +80,69 @@ widgets.tasklist.buttons = awful.util.table.join(
 	awful.button({}, 1, function(c) if not c:isvisible() then awful.tag.viewonly(c:tags()[1]) end client.focus = c; c:raise() end)
 )
 
---widgets.systray = widget({ type = "systray" })
---widgets.systray = wibox.widget.systray()
+widgets.systray = wibox.widget.systray()
 
---widgets.datewidget = widget({ type = "textbox" })
 widgets.datewidget = wibox.widget.textbox()
 vicious.register(widgets.datewidget, vicious.widgets.date, "<span color='" .. beautiful.fg_focus .. "'>%d.%m.%Y %T</span>", 1)
---vicious.register(widgets.datewidget, vicious.widgets.date, "<span color='#aaaaaa'>%d.%m.%Y %T</span>", 1)
 
---widgets.cpugraph = awful.widget.graph({ layout = awful.widget.layout.horizontal.rightleft })
 widgets.cpugraph = awful.widget.graph()
 widgets.cpugraph:set_width(50)
 widgets.cpugraph:set_height(14)
 widgets.cpugraph:set_background_color(beautiful.bg_normal)
 widgets.cpugraph:set_color("#AECF96")
---widgets.cpugraph:set_gradient_colors({ "#FF5656", "#88A175", "#AECF96" })
 vicious.register(widgets.cpugraph, vicious.widgets.cpu, "$1")
 
---widgets.memgraph = awful.widget.graph({ layout = awful.widget.layout.horizontal.rightleft })
+local cpu_total = 0
+local cpu_active = 0
+cpugraph_t = awful.tooltip({
+	timer_function = function()
+		-- TODO: Show per-CPU usage
+		local f = io.open("/proc/stat")
+		local line = f:read()
+		f:close()
+		local fields = {}
+		local total_new = 0
+		for v in string.gmatch(line, "[%s]+([^%s]+)") do
+			table.insert(fields, v)
+			total_new = total_new + v
+		end
+		local active_new = total_new - (fields[4] + fields[5])
+		local active = active_new - cpu_active
+		local total = total_new - cpu_total
+		cpu_active = active_new
+		cpu_total = total_new
+		return string.format("%.2f %%", active / total * 100)
+	end,
+})
+cpugraph_t:add_to_object(widgets.cpugraph)
+
 widgets.memgraph = awful.widget.graph()
 widgets.memgraph:set_width(50)
 widgets.memgraph:set_height(14)
 widgets.memgraph:set_background_color(beautiful.bg_normal)
 widgets.memgraph:set_border_color(nil)
 widgets.memgraph:set_color("#FF5656")
---widgets.memgraph:set_gradient_colors({ "#FF5656", "#88A175", "#AECF96" })
 vicious.register(widgets.memgraph, vicious.widgets.mem, "$1")
 
---[[memgraph_t = awful.tooltip({
+memgraph_t = awful.tooltip({
 	timer_function = function()
-		local f = io.popen("cat /proc/meminfo | awk '{print $2}'")
-		local s = f:read()
-		local s2 = f:read()
-		return s .. "\n" .. s2
+		local f = io.popen("awk '{print $2}' < /proc/meminfo")
+		local total = f:read()
+		local free = f:read()
+		local used = total - free
+		total = total / 2^10
+		free = free / 2^10
+		used = used / 2^10
+		return string.format("Used: %.2f MB (%.f %%)\nFree: %.2f MB (%.f %%)\nTotal: %.2f MB",
+			used, used / total * 100, free, free / total * 100, total)
 	end,
-})]]--
---memgraph_t:add_to_object(widgets.memgraph.widget)
---widgets.memgraph.widget:add_signal("mouse:enter", function()
---end)
+})
+memgraph_t:add_to_object(widgets.memgraph)
 
---widgets.hddtemp = widget({ type = "textbox" })
---widgets.hddtemp = wibox.widget.textbox()
---if os.getenv("DISPLAY") == ":0" then
-	--vicious.register(widgets.hddtemp, vicious.widgets.hddtemp, "${/dev/sda} °C", 19)
+widgets.temp = jbh.widgets.sensors("k10temp-pci-*", 5)
 
-	widgets.hddtemp = jbh.widgets.sensors(5)
---end
-
---widgets.net = widget({ type = "textbox" })
 widgets.net = wibox.widget.textbox()
 vicious.register(widgets.net, vicious.widgets.net, "${eth0 down_kb} / ${eth0 up_kb}")
-
---widgets.mpd = widget({ type = "textbox" })
---[[vicious.register(widgets.mpd, vicious.widgets.mpd, function(w, t)
-	if t["{state}"] == "Stop" then
-		return ""
-	else
-		return t["{Artist}"] .. " - " .. t["{Album}"] .. " - ".. t["{Title}"]
-	end
-end)]]--
-
---widgets.mail = widget({ type = "textbox" })
---vicious.register(widgets.mail, vicious.widgets.gmail, " ${count}")
 
 icons = {}
 
@@ -163,9 +164,6 @@ icons.up:set_image(beautiful.widget_up)
 icons.temp = wibox.widget.imagebox()
 icons.temp:set_image(beautiful.widget_temp)
 
---icons.mail = widget({ type = "imagebox" })
---icons.mail.image = image(beautiful.widget_mail)
-
 statusbar = {}
 
 for s = 1, screen.count() do
@@ -185,12 +183,9 @@ for s = 1, screen.count() do
 		end
 	end
 
-	--widgets.taglist[s] = awful.widget.taglist(s, awful.widget.taglist.label.all, widgets.taglist.buttons)
 	widgets.taglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.all, widgets.taglist.buttons)
-	--widgets.tasklist[s] = awful.widget.tasklist(function(c) return awful.widget.tasklist.label.currenttags(c, s) end, widgets.tasklist.buttons)
 	widgets.tasklist[s] = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, widgets.tasklist.buttons)
 
-	--widgets.promptbox[s] = awful.widget.prompt({layout = awful.widget.layout.horizontal.leftright})
 	widgets.promptbox[s] = awful.widget.prompt()
 
 	local left_layout = wibox.layout.fixed.horizontal()
@@ -204,7 +199,7 @@ for s = 1, screen.count() do
 		right_layout:add(icons.up)
 		right_layout:add(icons.separator)
 		right_layout:add(icons.temp)
-		right_layout:add(widgets.hddtemp)
+		right_layout:add(widgets.temp)
 		right_layout:add(icons.separator)
 		right_layout:add(icons.mem)
 		right_layout:add(widgets.memgraph)
@@ -212,7 +207,7 @@ for s = 1, screen.count() do
 		right_layout:add(icons.cpu)
 		right_layout:add(widgets.cpugraph)
 		right_layout:add(icons.separator)
-		right_layout:add(wibox.widget.systray())
+		right_layout:add(widgets.systray)
 		right_layout:add(icons.separator)
 		right_layout:add(widgets.datewidget)
 	end
@@ -225,40 +220,6 @@ for s = 1, screen.count() do
 
 	statusbar[s] = awful.wibox({position = "top", screen = s, height = 14})
 	statusbar[s]:set_widget(layout)
-
-	--[[statusbar[s].widgets = {
-		{
-			widgets.taglist[s],
-			widgets.promptbox[s],
-			layout = awful.widget.layout.horizontal.leftright
-		},
-		widgets.layoutbox[s],
-		s == 1 and {
-			widgets.datewidget,
-			icons.separator,
-			widgets.systray,
-			icons.separator,
-			widgets.cpugraph,
-			icons.cpu,
-			icons.separator,
-			widgets.memgraph,
-			icons.mem,
-			icons.separator,
-			--widgets.mail,
-			--icons.mail,
-			--icons.separator,
-			widgets.hddtemp,
-			icons.temp,
-			icons.separator,
-			icons.up,
-			widgets.net,
-			icons.down,
-			layout = awful.widget.layout.horizontal.rightleft
-		} or nil,
-		--s == 2 and widgets.mpd or nil,
-		widgets.tasklist[s],
-		layout = awful.widget.layout.horizontal.rightleft
-	}]]--
 end
 
 globalkeys = awful.util.table.join(
