@@ -334,8 +334,8 @@ awful.rules.rules = {
 	{ rule = { class = "warzone2100" }, properties = { border_width = 0 } },
 	{ rule = { class = "mupen64plus" }, properties = { border_width = 0 } },
 	{ rule = { name = "Coertex Command" }, properties = { border_width = 0 } },
-	{ rule = { class = "ioUrbanTerror" }, properties = { border_width = 0 } }
-	--{ rule = { class = "Google-chrome" }, properties = { floating = false } }
+	{ rule = { class = "ioUrbanTerror" }, properties = { border_width = 0 } },
+	{ rule = { class = "Google-chrome", role = "browser" }, properties = { floating = false } }
 --[[	{ rule = { name = "MPlayer" }, properties = { floating = true, border_width = 0 } },
 	{ rule = { class = "Gimp" }, properties = { floating = true } },
 	{ rule = { name = "Mirage" }, properties = { floating = true } },
