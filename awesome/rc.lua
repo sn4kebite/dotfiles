@@ -92,26 +92,54 @@ widgets.cpugraph:set_background_color(beautiful.bg_normal)
 widgets.cpugraph:set_color("#AECF96")
 vicious.register(widgets.cpugraph, vicious.widgets.cpu, "$1")
 
-local cpu_total = 0
-local cpu_active = 0
+local cpu_total = {}
+local cpu_active = {}
 cpugraph_t = awful.tooltip({
 	timer_function = function()
-		-- TODO: Show per-CPU usage
+		-- The following lines are mostly copy-paste from vicious' cpu-widget.
+
+		local cpu_lines = {}
+
+		-- Get CPU stats
 		local f = io.open("/proc/stat")
-		local line = f:read()
-		f:close()
-		local fields = {}
-		local total_new = 0
-		for v in string.gmatch(line, "[%s]+([^%s]+)") do
-			table.insert(fields, v)
-			total_new = total_new + v
+		for line in f:lines() do
+			if string.sub(line, 1, 3) ~= "cpu" then break end
+
+			cpu_lines[#cpu_lines+1] = {}
+
+			for i in string.gmatch(line, "[%s]+([^%s]+)") do
+				table.insert(cpu_lines[#cpu_lines], i)
+			end
 		end
-		local active_new = total_new - (fields[4] + fields[5])
-		local active = active_new - cpu_active
-		local total = total_new - cpu_total
-		cpu_active = active_new
-		cpu_total = total_new
-		return string.format("%.2f %%", active / total * 100)
+		f:close()
+
+		-- Ensure tables are initialized correctly
+		for i = #cpu_total + 1, #cpu_lines do
+			cpu_total[i]  = 0
+			cpu_active[i] = 0
+		end
+
+		local s = {}
+		for i, v in ipairs(cpu_lines) do
+			-- Calculate totals
+			local total_new = 0
+			for j = 1, #v do
+				total_new = total_new + v[j]
+			end
+			local active_new = total_new - (v[4] + v[5])
+
+			-- Calculate percentage
+			local diff_total  = total_new - cpu_total[i]
+			local diff_active = active_new - cpu_active[i]
+
+			if diff_total == 0 then diff_total = 1E-6 end
+			table.insert(s, string.format("%.2f %%", (diff_active / diff_total) * 100))
+
+			-- Store totals
+			cpu_total[i]   = total_new
+			cpu_active[i]  = active_new
+		end
+		return table.concat(s, "\n")
 	end,
 })
 cpugraph_t:add_to_object(widgets.cpugraph)
