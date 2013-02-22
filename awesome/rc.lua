@@ -350,7 +350,8 @@ awful.rules.rules = {
 			focus = true,
 			keys = clientkeys,
 			buttons = clientbuttons,
-			floating = true
+			floating = true,
+			size_hints_honor = false
 		}
 	},
 	{ rule = { class = "URxvt" }, properties = { floating = false } },
@@ -409,7 +410,6 @@ client.connect_signal("manage", function(c, startup)
 	c:buttons(clientbuttons)
 	client.focus = c
 	c:keys(clientkeys)
-	c.size_hints_honor = false
 end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
