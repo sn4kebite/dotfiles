@@ -2,10 +2,11 @@
 -- Default awesome theme --
 ---------------------------
 
+local awful = require("awful")
+
 theme = {}
 
---theme.confdir = awful.util.getdir("config")
-theme.confdir = "/home/snakebite/.config/awesome"
+theme.confdir = awful.util.getdir("config")
 
 theme.widget_separator = theme.confdir .. "/icons/separator.png"
 theme.widget_cpu = theme.confdir .. "/icons/cpu.png"
@@ -15,12 +16,10 @@ theme.widget_up = theme.confdir .. "/icons/up.png"
 theme.widget_temp = theme.confdir .. "/icons/temp.png"
 theme.widget_mail = theme.confdir .. "/icons/mail.png"
 
---theme.font           = "silkscreen 6"
---theme.font           = "terminus 9"
 theme.font           = "ProFont 8"
 
 theme.bg_normal     = "#101010"
-theme.bg_focus      = "#404040"
+theme.bg_focus      = "#101010"
 theme.bg_urgent     = "#bf4646"
 theme.bg_minimize   = "#444444"
 theme.bg_systray    = theme.bg_normal
@@ -36,10 +35,6 @@ theme.border_focus  = "#535d6c"
 theme.border_marked = "#91231c"
 
 theme.taglist_fg_focus  = "#dddddd"
-theme.taglist_bg_focus  = "#404040"
-
-theme.tasklist_fg_focus = "#dddddd"
-theme.tasklist_bg_focus = "#404040"
 
 -- There are other variable sets
 -- overriding the default one when
@@ -92,10 +87,6 @@ theme.titlebar_maximized_button_normal_inactive = "/usr/share/awesome/themes/def
 theme.titlebar_maximized_button_focus_inactive  = "/usr/share/awesome/themes/default/titlebar/maximized_focus_inactive.png"
 theme.titlebar_maximized_button_normal_active = "/usr/share/awesome/themes/default/titlebar/maximized_normal_active.png"
 theme.titlebar_maximized_button_focus_active  = "/usr/share/awesome/themes/default/titlebar/maximized_focus_active.png"
-
--- You can use your own command to set your wallpaper
-theme.wallpaper_cmd = { "awsetbg -t wallpaper.png" }
-theme.wallpaper = "/home/snakebite/wallpaper.png"
 
 -- You can use your own layout icons like this:
 theme.layout_fairh = theme.confdir .. "/icons-awesome-anrxc/layouts-small/fairh.png"
