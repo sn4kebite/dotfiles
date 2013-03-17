@@ -16,7 +16,7 @@ theme.widget_up = theme.confdir .. "/icons/up.png"
 theme.widget_temp = theme.confdir .. "/icons/temp.png"
 theme.widget_mail = theme.confdir .. "/icons/mail.png"
 
-theme.font           = "ProFont 8"
+theme.font           = "Terminus 8"
 
 theme.bg_normal     = "#101010"
 theme.bg_focus      = "#101010"
