@@ -15,6 +15,54 @@ pcm.dmixout {
 }
 
 pcm.!default {
-	type plug;
-	slave.pcm "plugequal";
+	type plug
+	# Normal output: plugequal
+	# HDMI output: hw:1,7
+	slave.pcm "plugequal"
+}
+
+pcm.miccopy {
+	type plug
+	slave {
+		pcm "hw:0,0"
+		#rate 44100
+		rate 8000
+		#format S16_LE
+		format U8
+	}
+}
+
+pcm.micfilter {
+	type ladspa
+	slave.pcm "miccopy"
+	path "/usr/lib/ladspa"
+	plugins [{
+		label lpf
+		id 1041
+		input {
+			controls [ 600 ]
+		}
+	}]
+}
+
+#pcm.micasym {
+#	type asym
+#	capture.pcm "micfilter"
+#}
+#
+#pcm.mic {
+#	type plug
+#	slave.pcm "micfilter"
+#}
+
+pcm.skype_asym {
+	type asym
+	playback.pcm "dmixout"
+	capture.pcm "micfilter"
+	#capture.pcm "miccopy"
+}
+
+pcm.skype {
+	type plug
+	slave.pcm "skype_asym"
 }

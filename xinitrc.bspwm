@@ -1,0 +1,9 @@
+source ~/.xinitrc.init
+
+# TODO: fix simpleswitcher for bspwm
+export BSPWM_SOCKET=~/.bspwm-socket
+export XDG_CONFIG_HOME=~/.config
+export PANEL_FIFO=~/.bspwm-panel-fifo
+[ -e "$PANEL_FIFO" ] && rm -f "$PANEL_FIFO"
+mkfifo "$PANEL_FIFO"
+PATH=$PATH:~/.bin exec bspwm -s "$PANEL_FIFO"

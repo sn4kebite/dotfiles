@@ -1,20 +1,13 @@
-# used for testing other stuff
-#exec gnome-session
-#exec wmfs
-#exec openbox-session
-
-export XMODIFIERS=@im=uim
-setxkbmap no
-setxkbmap -option compose:caps
-xset b off
-xset s off
-xset dpms 600
-xset fp+ /home/snakebite/.fonts/
-xset fp rehash
-numlockx on
-wakoopa &
-skype &
-keepassx &
-uim-xim &
-cow-notify/cow-notify &
-exec ck-launch-session awesome
+echo "args: $*"
+while [ "$1" = "xterm" ] || [ "$1" = "startx" ]; do
+	shift
+done
+if [ "$DISPLAY" = ":0" ]; then
+	skype &
+	keepassx &
+	uim-xim &
+	./notipyd &
+fi
+XINITRC="$HOME/.xinitrc.$1"
+[ -f $XINITRC ] && source $XINITRC
+exit 0

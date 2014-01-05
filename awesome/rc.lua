@@ -2,6 +2,7 @@ local gears = require("gears")
 local awful = require("awful")
 require("awful.autofocus")
 awful.rules =  require("awful.rules")
+awful.remote =  require("awful.remote")
 local beautiful = require("beautiful")
 -- local naughty = require("naughty")
 local wibox = require("wibox")
@@ -285,7 +286,7 @@ globalkeys = awful.util.table.join(
 	awful.key({"Mod4"}, "Return", function() awful.util.spawn("urxvt") end),
 	--awful.key({}, "XF86Tools", function() awful.util.spawn("mpdnotify") end),
 	awful.key({}, "XF86Tools", function() awful.util.spawn("deadbeef") end),
-	awful.key({}, "XF86HomePage", function() awful.util.spawn("google-chrome") end),
+	awful.key({}, "XF86HomePage", function() awful.util.spawn("google-chrome-stable --enable-easy-off-store-extension-install --audio-buffer-size=2048") end),
 --[[	awful.key({}, "XF86AudioPlay", function() awful.util.spawn(".bin/mpcc toggle") end),
 	awful.key({"Shift"}, "XF86AudioPlay", function() awful.util.spawn(".bin/mpcc stop") end),
 	awful.key({"Control"}, "XF86AudioPlay", function() awful.util.spawn(".bin/mpcc prev") end),
@@ -356,6 +357,8 @@ awful.rules.rules = {
 	},
 	{ rule = { class = "URxvt" }, properties = { floating = false } },
 	{ rule = { name = "mplayer2" }, properties = { border_width = 0 } },
+	{ rule = { class = "mpv" }, properties = { border_width = 0 } },
+	{ rule = { class = "vdpau" }, properties = { border_width = 0 } },
 	{ rule = { class = "feh" }, properties = { border_width = 0} },
 	{ rule = { class = "SDL_App" }, properties = { border_width = 0 } },
 	{ rule = { class = "aquaria" }, properties = { border_width = 0 } },
@@ -364,7 +367,7 @@ awful.rules.rules = {
 	{ rule = { class = "mupen64plus" }, properties = { border_width = 0 } },
 	{ rule = { name = "Coertex Command" }, properties = { border_width = 0 } },
 	{ rule = { class = "ioUrbanTerror" }, properties = { border_width = 0 } },
-	{ rule = { class = "Google-chrome", role = "browser" }, properties = { floating = false } }
+	{ rule = { class = "Google-chrome-stable", role = "browser" }, properties = { floating = false, border_width = 0 } }
 --[[	{ rule = { name = "MPlayer" }, properties = { floating = true, border_width = 0 } },
 	{ rule = { class = "Gimp" }, properties = { floating = true } },
 	{ rule = { name = "Mirage" }, properties = { floating = true } },

@@ -1,0 +1,12 @@
+export XMODIFIERS=@im=uim
+# Fix java applications
+export _JAVA_AWT_WM_NONREPARENTING=1
+export BROWSER=google-chrome-unstable
+setxkbmap no
+setxkbmap -option compose:caps
+xset b off
+xset s off
+xset dpms 600
+xset fp+ /home/snakebite/.fonts/
+xset fp rehash
+numlockx on

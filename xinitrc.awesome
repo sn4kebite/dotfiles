@@ -1,0 +1,11 @@
+# used for testing other stuff
+#exec gnome-session
+#exec wmfs
+#exec openbox-session
+
+source ~/.xinitrc.init
+
+if [ "$DISPLAY" = ":0" ]; then
+	simpleswitcher/simpleswitcher -key mod4+F12 -dkey mod4+F11 &
+fi
+exec awesome

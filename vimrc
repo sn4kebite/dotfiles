@@ -9,6 +9,9 @@ colorscheme peachpuff
 set incsearch
 set wildmenu
 set hidden
+set laststatus=2
+"set noshowmode
+set pastetoggle=<F10>
 
 let &titlestring = expand("%:t")
 if &term == "screen"
@@ -34,3 +37,4 @@ function! s:insert_gates()
 endfunction
 
 autocmd BufNewFile *.h call <SID>insert_gates()
+au FileType python setl tabstop=4
