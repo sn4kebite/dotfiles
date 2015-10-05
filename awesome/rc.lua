@@ -4,7 +4,6 @@ require("awful.autofocus")
 awful.rules =  require("awful.rules")
 awful.remote =  require("awful.remote")
 local beautiful = require("beautiful")
--- local naughty = require("naughty")
 local wibox = require("wibox")
 local vicious = require("vicious")
 
@@ -12,36 +11,11 @@ local jbh = require("jbh")
 
 beautiful.init("/home/snakebite/.config/awesome/theme.lua")
 
---[[naughty.config.screen = 1
-naughty.config.margin = 4
-naughty.config.height = 16
-naughty.config.width = 300
-naughty.config.presets.low.font = "DejaVu Sans ExtraLight 14"
-naughty.config.presets.normal.font = "DejaVu Sans ExtraLight 14"
-naughty.config.presets.critical.font = "DejaVu Sans ExtraLight 14"
-naughty.config.default_preset.font = "DejaVu Sans ExtraLight 14"
-naughty.config.icon_size = 48
-naughty.config.fg = '#ffffff'
-naughty.config.bg = beautiful.bg_focus
-naughty.config.presets.normal.border_color = beautiful.border_focus
-naughty.config.border_width = 1
-]]--
-
 for s = 1, screen.count() do
 	gears.wallpaper.maximized("/home/snakebite/wallpaper." .. s .. ".png", s, true)
 end
 
 config = {}
-
---[[config.tags = {
-	{name = "main", screen = 1, selected = true},
-	{name = "web", screen = 1},
-	--{name = "spotify", screen = 1},
-	{name = "irssi", screen = 2, selected = true},
-	{name = "foo"},
-	{name = "bar"},
-	{name = "dev", screen = 1}
-}]]--
 
 config.tags = {}
 
@@ -53,14 +27,14 @@ tags = {}
 
 widgets = {}
 config.layouts = {
-	awful.layout.suit.tile.left,
-	awful.layout.suit.tile,
-	awful.layout.suit.tile.top,
-	awful.layout.suit.tile.bottom,
+	--awful.layout.suit.tile.left,
+	--awful.layout.suit.tile,
+	--awful.layout.suit.tile.top,
+	--awful.layout.suit.tile.bottom,
 	awful.layout.suit.fair,
-	awful.layout.suit.fair.horizontal,
-	--awful.layout.suit.max,
-	--awful.layout.suit.max.fullscreen,
+	--awful.layout.suit.fair.horizontal,
+	awful.layout.suit.max,
+	awful.layout.suit.max.fullscreen,
 	--awful.layout.suit.magnifier,
 	--awful.layout.suit.floating
 }
@@ -70,15 +44,17 @@ widgets.promptbox = {}
 widgets.taglist.buttons = awful.util.table.join(
 	awful.button({}, 1, awful.tag.viewonly),
 	awful.button({"Mod4"}, 1, awful.client.movetotag),
-	awful.button({}, 3, function(tag) tag.selected = not tag.selected end),
+	awful.button({}, 3, awful.tag.viewtoggle),
 	awful.button({"Mod4"}, 3, awful.client.toggletag),
-	awful.button({}, 4, awful.tag.viewnext),
-	awful.button({}, 5, awful.tag.viewprev)
+	awful.button({}, 4, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end),
+	awful.button({}, 5, function(t) awful.tag.viewnext(awful.tag.getscreen(t)) end)
 )
 
 widgets.tasklist = {}
 widgets.tasklist.buttons = awful.util.table.join(
-	awful.button({}, 1, function(c) if not c:isvisible() then awful.tag.viewonly(c:tags()[1]) end client.focus = c; c:raise() end)
+	awful.button({}, 1, function(c) if not c:isvisible() then awful.tag.viewonly(c:tags()[1]) end client.focus = c; c:raise() end),
+	awful.button({}, 4, function() awful.client.focus.byidx(-1) if client.focus then client.focus:raise() end end),
+	awful.button({}, 5, function() awful.client.focus.byidx(1) if client.focus then client.focus:raise() end end)
 )
 
 widgets.systray = wibox.widget.systray()
@@ -171,7 +147,7 @@ memgraph_t:add_to_object(widgets.memgraph)
 widgets.temp = jbh.widgets.sensors("k10temp-pci-*", 5)
 
 widgets.net = wibox.widget.textbox()
-vicious.register(widgets.net, vicious.widgets.net, "${eth0 down_kb} / ${eth0 up_kb}")
+vicious.register(widgets.net, vicious.widgets.net, '<span color="#408040">${eth0 down_kb}</span> / <span color="#804040">${eth0 up_kb}</span>')
 
 icons = {}
 
@@ -208,7 +184,7 @@ for s = 1, screen.count() do
 			i = #tags[s]
 			tags[s][i].screen = s
 			tags[s][i].selected = t.selected or false
-			awful.layout.set(config.layouts[5], tags[s][i])
+			awful.layout.set(config.layouts[1], tags[s][i])
 		end
 	end
 
@@ -254,12 +230,12 @@ end
 globalkeys = awful.util.table.join(
 	awful.key({"Mod4"}, "Left", awful.tag.viewprev),
 	awful.key({"Mod4"}, "Right", awful.tag.viewnext),
-	awful.key({"Mod4"}, "j", function() awful.client.focus.byidx(1) end),
-	awful.key({"Mod4"}, "k", function() awful.client.focus.byidx(-1) end),
-	awful.key({"Mod4", "Shift"}, "j", function() awful.client.swap.byidx(1) end),
-	awful.key({"Mod4", "Shift"}, "k", function() awful.client.swap.byidx(-1) end),
-	awful.key({"Mod4", "Control"}, "j", function() awful.screen.focus_relative(1) end),
-	awful.key({"Mod4", "Control"}, "k", function() awful.screen.focus_relative(-1) end),
+	awful.key({"Mod4"}, "k", function() awful.client.focus.byidx(1) end),
+	awful.key({"Mod4"}, "j", function() awful.client.focus.byidx(-1) end),
+	awful.key({"Mod4", "Shift"}, "k", function() awful.client.swap.byidx(1) end),
+	awful.key({"Mod4", "Shift"}, "j", function() awful.client.swap.byidx(-1) end),
+	awful.key({"Mod4", "Control"}, "k", function() awful.screen.focus_relative(1) end),
+	awful.key({"Mod4", "Control"}, "j", function() awful.screen.focus_relative(-1) end),
 	awful.key({"Mod4"}, "u", awful.client.urgent.jumpto),
 	awful.key({"Mod4"}, "Tab",
 		function()
@@ -277,29 +253,17 @@ globalkeys = awful.util.table.join(
 	awful.key({"Mod4"}, "space", function() awful.layout.inc(config.layouts, 1) end),
 	awful.key({"Mod4", "Shift"}, "space", function() awful.layout.inc(config.layouts, -1) end),
 	awful.key({"Mod4"}, "r", function () widgets.promptbox[mouse.screen]:run() end),
-	--awful.key({"Mod4"}, "r", function () awful.util.spawn(".bin/chakushu") end),
 	awful.key({"Mod4", "Control"}, "r", awesome.restart),
-	awful.key({"Mod4"}, "q", awesome.quit),
+	awful.key({"Mod4", "Control"}, "q", awesome.quit),
 
 	-- Spawn stuff
-	--awful.key({"Mod4"}, "Return", function() awful.util.spawn(".bin/urxvt-wrapper") end),
 	awful.key({"Mod4"}, "Return", function() awful.util.spawn("urxvt") end),
-	--awful.key({}, "XF86Tools", function() awful.util.spawn("mpdnotify") end),
 	awful.key({}, "XF86Tools", function() awful.util.spawn("deadbeef") end),
-	awful.key({}, "XF86HomePage", function() awful.util.spawn("google-chrome-stable --enable-easy-off-store-extension-install --audio-buffer-size=2048") end),
---[[	awful.key({}, "XF86AudioPlay", function() awful.util.spawn(".bin/mpcc toggle") end),
-	awful.key({"Shift"}, "XF86AudioPlay", function() awful.util.spawn(".bin/mpcc stop") end),
-	awful.key({"Control"}, "XF86AudioPlay", function() awful.util.spawn(".bin/mpcc prev") end),
-	awful.key({"Mod1"}, "XF86AudioPlay", function() awful.util.spawn(".bin/mpcc next") end),
-	awful.key({"Mod4", "Control"}, "XF86AudioPlay", function() awful.util.spawn(".bin/mpcc seek -10") end),
-	awful.key({"Mod4"}, "XF86AudioPlay", function() awful.util.spawn(".bin/mpcc seek +10") end),]]--
+	awful.key({}, "XF86HomePage", function() awful.util.spawn("google-chrome-stable") end),
 	awful.key({}, "XF86AudioPlay", function() awful.util.spawn("deadbeef --play-pause") end),
 	awful.key({"Shift"}, "XF86AudioPlay", function() awful.util.spawn("deadbeef --stop") end),
 	awful.key({"Control"}, "XF86AudioPlay", function() awful.util.spawn("deadbeef --prev") end),
-	awful.key({"Mod1"}, "XF86AudioPlay", function() awful.util.spawn("deadbeef --next") end),
---[[	awful.key({"Mod4", "Control"}, "XF86AudioPlay", function() awful.util.spawn(".bin/mpcc seek -10") end),
-	awful.key({"Mod4"}, "XF86AudioPlay", function() awful.util.spawn(".bin/mpcc seek +10") end),]]--
-	awful.key({}, "Print", function() awful.util.spawn("scrot") end)
+	awful.key({"Mod1"}, "XF86AudioPlay", function() awful.util.spawn("deadbeef --next") end)
 )
 
 for i = 1, 9 do
@@ -335,11 +299,12 @@ end
 root.keys(globalkeys)
 
 clientkeys = awful.util.table.join(
+	awful.key({"Mod4", "Mod1"}, "k", function(c) awful.client.movetoscreen(c, c.screen+1) end),
+	awful.key({"Mod4", "Mod1"}, "j", function(c) awful.client.movetoscreen(c, c.screen-1) end),
 	awful.key({"Mod4"}, "f", function(c) c.fullscreen = not c.fullscreen end),
 	awful.key({"Mod4", "Control"}, "space", awful.client.floating.toggle),
 	awful.key({"Mod4"}, "c", function(c) c:kill() end),
-	awful.key({"Mod4"}, "b", function(c) if c.border_width == 0 then c.border_width = 1 else c.border_width = 0 end end),
-	awful.key({"Mod4"}, "t", function(c) if c.titlebar then awful.titlebar.remove(c) else awful.titlebar.add(c, {modkey = "Mod4"}) end end)
+	awful.key({"Mod4"}, "b", function(c) if c.border_width == 0 then c.border_width = 1 else c.border_width = 0 end end)
 )
 
 awful.rules.rules = {
@@ -356,40 +321,14 @@ awful.rules.rules = {
 		}
 	},
 	{ rule = { class = "URxvt" }, properties = { floating = false } },
+	{ rule = { class = "Termite" }, properties = { floating = false } },
 	{ rule = { name = "mplayer2" }, properties = { border_width = 0 } },
+	{ rule = { name = "MPlayer" }, properties = { border_width = 0 } },
 	{ rule = { class = "mpv" }, properties = { border_width = 0 } },
 	{ rule = { class = "vdpau" }, properties = { border_width = 0 } },
 	{ rule = { class = "feh" }, properties = { border_width = 0} },
 	{ rule = { class = "SDL_App" }, properties = { border_width = 0 } },
-	{ rule = { class = "aquaria" }, properties = { border_width = 0 } },
-	{ rule = { class = "net-minecraft-MinecraftLauncher" }, properties = { border_width = 0 } },
-	{ rule = { class = "warzone2100" }, properties = { border_width = 0 } },
-	{ rule = { class = "mupen64plus" }, properties = { border_width = 0 } },
-	{ rule = { name = "Coertex Command" }, properties = { border_width = 0 } },
-	{ rule = { class = "ioUrbanTerror" }, properties = { border_width = 0 } },
-	{ rule = { class = "Google-chrome-stable", role = "browser" }, properties = { floating = false, border_width = 0 } }
---[[	{ rule = { name = "MPlayer" }, properties = { floating = true, border_width = 0 } },
-	{ rule = { class = "Gimp" }, properties = { floating = true } },
-	{ rule = { name = "Mirage" }, properties = { floating = true } },
-	{ rule = { class = "Walls" }, properties = { floating = true } },
-	{ rule = { class = "feh" }, properties = { floating = true, border_width = 0} },
-	{ rule = { class = "Dolphin" }, properties = { floating = true } },
-	{ rule = { class = "Wine" }, properties = { floating = true } },
-	{ rule = { class = "Comix" }, properties = { floating = true } },
-	{ rule = { name = "GPU" }, properties = { floating = true } },
-	{ rule = { class = "Epdfview" }, properties = { floating = true } },
-	{ rule = { class = "Ufraw" }, properties = { floating = true } },
-	{ rule = { class = "Rawstudio" }, properties = { floating = true } },
-	{ rule = { class = "Easytag" }, properties = { floating = true } },
-	{ rule = { class = "qemu" }, properties = { floating = true } },
-	{ rule = { class = "Nvidia-settings" }, properties = { floating = true } },
-	{ rule = { name = "NEStopia" }, properties = { floating = true } },
-	{ rule = { name = "galculator" }, properties = { floating = true } },
-	{ rule = { class = "Foo" }, properties = { floating = true } },
-	{ rule = { class = "SDL_App" }, properties = { border_width = 0 } },
-	{ rule = { class = "aquaria" }, properties = { border_width = 0 } },
-	{ rule = { class = "net-minecraft-MinecraftLauncher" }, properties = { border_width = 0 } },
-	{ rule = { class = "warzone2100" }, properties = { border_width = 0 } }]]--
+	{ rule = { class = "Google-chrome", role = "browser" }, properties = { floating = false, border_width = 0 } }
 }
 
 clientbuttons = awful.util.table.join(

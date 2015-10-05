@@ -1,7 +1,7 @@
 export XMODIFIERS=@im=uim
 # Fix java applications
 export _JAVA_AWT_WM_NONREPARENTING=1
-export BROWSER=google-chrome-unstable
+export BROWSER=google-chrome-stable
 setxkbmap no
 setxkbmap -option compose:caps
 xset b off
@@ -9,4 +9,5 @@ xset s off
 xset dpms 600
 xset fp+ /home/snakebite/.fonts/
 xset fp rehash
+compton -b --backend glx --vsync opengl-swc --paint-on-overlay
 numlockx on

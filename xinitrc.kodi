@@ -1,0 +1,5 @@
+source ~/.xinitrc.init
+
+xset -dpms
+
+exec kodi -fs -l /var/run/lirc/lircd

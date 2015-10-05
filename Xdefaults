@@ -33,14 +33,15 @@ URxvt.scrollWithBuffer:	true
 URxvt.scrollTtyKeypress:true
 URxvt.font:				xft:Terminus:pixelsize=12,xft:TakaoGothic
 URxvt.imFont:			-*-takaogothic-*-*-*-*-12-*-*-*-*-*-*-*
-URxvt.transparent:		true
-URxvt.shading:			10
+URxvt.depth:			32
+URxvt.background:		rgba:0000/0000/0000/dddd
 URxvt.visualBell:		true
 URxvt.pointerBlank:		true
 URxvt.urgentOnBell:		true
 URxvt.perl-ext:			default,url-select
 URxvt.keysym.M-l:		perl:url-select:select_next
 URxvt.url-select.launcher:google-chrome-stable
+URxvt.url-select.button:-
 ! rxvt-unicode in Arch adds crap to TERM
 URxvt.termName:			rxvt-unicode
 

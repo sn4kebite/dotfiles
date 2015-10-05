@@ -51,7 +51,7 @@ function t() {
 	TITLE="$*"
 }
 
-alias scrot='scrot -e "mv \$f ~/shots/"'
+alias scrot='scrot -e "mv \$f ~/shots/; echo \\\\~/shots/\$f"'
 
 eval `dircolors -b`
 PATH=$PATH:~/.bin:~/bin

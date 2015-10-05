@@ -6,6 +6,15 @@
 source ~/.xinitrc.init
 
 if [ "$DISPLAY" = ":0" ]; then
+	(
+	sleep 10
+	#skype &
+	keepassx &
+	uim-xim &
+	./notipyd &
 	simpleswitcher/simpleswitcher -key mod4+F12 -dkey mod4+F11 &
+	#pulseaudio -D
+	redshift-gtk &
+	) &
 fi
 exec awesome
