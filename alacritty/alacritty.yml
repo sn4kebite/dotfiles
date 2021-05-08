@@ -1,0 +1,46 @@
+font:
+  size: 9
+  normal:
+    family: 'Terminus (TTF)'
+
+colors:
+  primary:
+    #background: '#101010'
+    background: '#000000'
+    foreground: '#aaaaaa'
+    bright_foreground: '#eeeeee'
+  normal:
+    black: '#080808'
+    red: '#bf4646'
+    green: '#b7ce42'
+    yellow: '#fea63c'
+    blue: '#336692'
+    magenta: '#b7416e'
+    cyan: '#5e7175'
+    white: '#aaaaaa'
+  bright:
+    black: '#404040'
+    red: '#f48a8a'
+    green: '#bde077'
+    yellow: '#ffe863'
+    blue: '#478dc9'
+    magenta: '#bb4466'
+    cyan: '#a3babf'
+    white: '#eeeeee'
+
+draw_bold_text_with_bright_colors: true
+
+background_opacity: 0.85
+
+mouse:
+  hide_when_typing: true
+  url:
+    modifiers: Control
+
+bell:
+  animation: EaseOutExpo
+  duration: 100
+  color: '#ffffff'
+
+selection:
+  semantic_escape_chars: ",│`|\"' ()[]{}<>\t"

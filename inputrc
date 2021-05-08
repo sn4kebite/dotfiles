@@ -4,5 +4,9 @@ $include /etc/inputrc
 "\e[5~": history-search-backward
 "\e[6~": history-search-forward
 
+# Ctrl-left-arrow and right-arrow for alacritty
+#"\e[1;3C": forward-word
+#"\e[1;3D": backward-word
+
 # append / when tabcompleting directory symlinks
 set mark-symlinked-directories on

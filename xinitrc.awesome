@@ -7,14 +7,16 @@ source ~/.xinitrc.init
 
 if [ "$DISPLAY" = ":0" ]; then
 	(
-	sleep 10
+	sleep 5
 	#skype &
-	keepassx &
-	uim-xim &
-	./notipyd &
-	simpleswitcher/simpleswitcher -key mod4+F12 -dkey mod4+F11 &
-	#pulseaudio -D
+	keepassxc &
+	fcitx5 -dr
+	#./notipyd &
 	redshift-gtk &
+	rofi -key-run SuperL+r -key-window SuperL+F12 &
 	) &
+fi
+if [ "$DISPLAY" = ":1" ]; then
+	xrandr --output HDMI-0 --auto --primary
 fi
 exec awesome
