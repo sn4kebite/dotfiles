@@ -30,12 +30,20 @@ colors:
 
 draw_bold_text_with_bright_colors: true
 
-background_opacity: 0.85
+window:
+  opacity: 0.85
 
 mouse:
   hide_when_typing: true
-  url:
-    modifiers: Control
+
+hints:
+  enabled:
+    - regex: "(http:|https:)\
+              [^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩`]+"
+      command: google-chrome-stable
+      mouse:
+        enabled: true
+        mods: Control
 
 bell:
   animation: EaseOutExpo
