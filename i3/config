@@ -247,6 +247,7 @@ for_window [class="vdpau"] border pixel 0
 for_window [class="feh"] border pixel 0
 for_window [class="SDL_App"] border pixel 0
 for_window [class="Google-chrome" window_role="browser"] floating disable border pixel 0
+for_window [class="Google-chrome" title="Microsoft Teams"] floating disable border pixel 0
 for_window [class="Brave-browser" window_role="browser"] floating disable border pixel 0
 #for_window [class="Microsoft Teams - Preview"] floating disable
 #for_window [title="Loading Microsoft Teams"] floating enable
