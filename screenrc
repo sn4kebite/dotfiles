@@ -1,6 +1,7 @@
-hardstatus alwayslastline "%{= dK}%H %0c %{y}> %{= K}%-w%{dw}%n %t%{= dK}%+w"
+hardstatus alwayslastline "%{= d7}%H %0c %{3}> %{= d7}%-w%{7}%n %t%{= d7}%+w"
 startup_message off
 shelltitle '$ |bash'
 altscreen on
 vbell off
 bell_msg "Bell in window %n ^G"
+termcapinfo xterm*|alacritty ti@:te@
